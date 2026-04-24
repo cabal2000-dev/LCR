@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lead Attribution Dashboard – March 2026</title>
+<style>
+:root{--blue:#2563eb;--blue-l:#dbeafe;--green:#16a34a;--green-l:#dcfce7;--amber:#d97706;--amber-l:#fef3c7;--red:#dc2626;--red-l:#fee2e2;--slate:#64748b;--slate-l:#f1f5f9;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text)}
+.hdr{background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);color:#fff;padding:18px 28px}
+.hdr h1{font-size:1.4rem;font-weight:700;letter-spacing:-.02em}
+.hdr p{font-size:.82rem;opacity:.82;margin-top:3px}
+.ctx{background:#1e293b;color:#e2e8f0;padding:9px 28px;font-size:.78rem;display:flex;gap:20px;flex-wrap:wrap}
+.ctx span{color:#94a3b8}.ctx strong{color:#f0f6ff}
+.tabs{background:#fff;border-bottom:2px solid var(--border);padding:0 28px;display:flex;gap:4px}
+.tb{padding:13px 20px;font-size:.88rem;font-weight:500;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s}
+.tb:hover{color:var(--blue)}.tb.on{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+.tc{display:none}.tc.on{display:block}
+.pg{padding:22px 28px}
+.sec{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);margin-bottom:18px;overflow:hidden}
+.sh{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sh h3{font-size:.95rem;font-weight:600}.sh .note{font-size:.74rem;color:var(--muted);margin-left:auto}
+.sb{padding:18px 20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:18px}
+.card{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:16px 18px;border-left:4px solid var(--blue)}
+.card.g{border-left-color:var(--green)}.card.a{border-left-color:var(--amber)}.card.r{border-left-color:var(--red)}.card.s{border-left-color:var(--slate)}.card.b{border-left-color:var(--blue)}
+.cl{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+.cv{font-size:1.65rem;font-weight:700;margin-top:3px;line-height:1.1}
+.cs{font-size:.75rem;color:var(--muted);margin-top:3px}
+.gm{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.gmc{background:#1e3a5f;color:#fff;border-radius:10px;padding:15px 16px}
+.gml{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;opacity:.7}
+.gmv{font-size:1.35rem;font-weight:700;margin-top:3px}
+.gms{font-size:.72rem;opacity:.65;margin-top:2px}
+.scroll-wrap{overflow-y:auto}
+.scroll-wrap canvas{width:100%!important}
+.tbl-wrap{overflow-x:auto;max-height:480px;overflow-y:auto}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+thead th{background:var(--slate-l);padding:8px 11px;text-align:left;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;position:sticky;top:0;white-space:nowrap;z-index:1}
+tbody tr{border-bottom:1px solid var(--border)}
+tbody tr:hover{background:#f8faff}
+tbody td{padding:8px 11px;vertical-align:middle}
+.pill{display:inline-block;padding:2px 7px;border-radius:11px;font-size:.7rem;font-weight:600;white-space:nowrap}
+.pg{background:var(--green-l);color:var(--green)}.pa{background:var(--amber-l);color:var(--amber)}
+.pr{background:var(--red-l);color:var(--red)}.ps{background:var(--slate-l);color:var(--slate)}.pb{background:var(--blue-l);color:var(--blue)}
+.ib{border-left:4px solid;padding:14px 18px;border-radius:0 8px 8px 0;margin-bottom:14px}
+.ib.g{border-color:var(--green);background:var(--green-l)}.ib.a{border-color:var(--amber);background:var(--amber-l)}
+.ib.r{border-color:var(--red);background:var(--red-l)}.ib.b{border-color:var(--blue);background:var(--blue-l)}.ib.s{border-color:var(--slate);background:var(--slate-l)}
+.ib h4{font-size:.88rem;font-weight:700;margin-bottom:7px}
+.ib p{font-size:.82rem;line-height:1.6;margin-bottom:5px}
+.ib ul{padding-left:16px;font-size:.82rem;line-height:1.9}
+.ib .m{font-weight:700}
+@media(max-width:900px){.gm{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div class="hdr"><h1>Lead Attribution Dashboard — March 2026</h1><p>Internet Lead ROI Analysis · Auto Lenders · Updated Apr 23, 2026</p></div>
+<div class="ctx">
+  <span>Total Internet Leads: <strong>4,510</strong></span>
+  <span>Google Attributed: <strong>2,183</strong></span>
+  <span>UTM Attributed: <strong>350</strong></span>
+  <span>Total Units Sold (March): <strong>1,342</strong></span>
+  <span>Internet Dept Appts Scheduled: <strong>2,541</strong></span>
+  <span style="color:#64748b">• A customer may appear in multiple campaigns</span>
+</div>
+<div class="tabs">
+  <button class="tb on" onclick="showTab('google',this)">📊 Google Ads Campaigns</button>
+  <button class="tb" onclick="showTab('utm',this)">🔗 UTM + Not Attributed</button>
+</div>
+
+<div id="tab-google" class="tc on">
+<div class="pg">
+  <div class="cards" id="gcards"></div>
+  <div class="gm">
+    <div class="gmc"><div class="gml">Total Ad Spend</div><div class="gmv">$282,632</div><div class="gms">March 2026</div></div>
+    <div class="gmc"><div class="gml">Total Clicks</div><div class="gmv">104,456</div><div class="gms">From AdWords</div></div>
+    <div class="gmc"><div class="gml">Impressions</div><div class="gmv">1,431,678</div><div class="gms">Total ad views</div></div>
+    <div class="gmc"><div class="gml">GA Conversions</div><div class="gmv">9,363</div><div class="gms">All website actions</div></div>
+    <div class="gmc"><div class="gml">Avg Cost / Conv</div><div class="gmv">$30.19</div><div class="gms">Incl. non-lead actions</div></div>
+  </div>
+  <div class="sec">
+    <div class="sh"><h3>📊 Lead Volume &amp; Appointment Breakdown</h3><span class="note">All Google campaigns with appointment activity · scroll to see all</span></div>
+    <div class="sb"><div class="scroll-wrap" style="max-height:900px"><canvas id="ga-appt"></canvas></div></div>
+  </div>
+  <div class="sec">
+    <div class="sh"><h3>📈 Sales Conversion Rate by Campaign</h3><span class="note">Google campaigns ≥5 leads · sorted high to low · green ≥15% · amber ≥5% · red &lt;5% · gray = ALGO context</span></div>
+    <div class="sb"><div class="scroll-wrap" style="max-height:780px"><canvas id="ga-sales"></canvas></div></div>
+  </div>
+  <div class="sec">
+    <div class="sh"><h3>📋 Campaign Detail — CRM &amp; AdWords Combined</h3></div>
+    <div style="padding:0"><div class="tbl-wrap"><table><thead><tr>
+      <th>Campaign</th><th>Type</th><th>Leads</th><th>Completed</th><th>Active</th><th>Cancelled</th><th>Missed</th><th>No Appt</th><th>Appt Rate</th><th>Sold</th><th>Sales Rate</th>
+      <th>Ad Cost</th><th>Clicks</th><th>Impr</th><th>GA Conv</th><th>CTR</th><th>Conv Rate</th><th>Avg CPC</th><th>Cost/Conv</th><th>Cost/Lead</th><th>Cost/Sale</th>
+    </tr></thead><tbody id="gtbody"></tbody></table></div></div>
+  </div>
+  <div class="sec"><div class="sh"><h3>💡 What Jumps Out — Google Ads Analysis</h3></div><div class="sb" id="ginsights"></div></div>
+</div>
+</div>
+
+<div id="tab-utm" class="tc">
+<div class="pg">
+  <div class="cards" id="ucards"></div>
+  <div class="sec">
+    <div class="sh"><h3>📊 Lead Volume &amp; Appointment Breakdown</h3><span class="note">UTM campaigns + Not Attributed · scroll to see all</span></div>
+    <div class="sb"><div class="scroll-wrap" style="max-height:900px"><canvas id="utm-appt"></canvas></div></div>
+  </div>
+  <div class="sec">
+    <div class="sh"><h3>📈 Sales Conversion Rate</h3><span class="note">UTM campaigns ≥3 leads + Not Attributed · sorted high to low</span></div>
+    <div class="sb"><div class="scroll-wrap" style="max-height:600px"><canvas id="utm-sales"></canvas></div></div>
+  </div>
+  <div class="sec">
+    <div class="sh"><h3>📋 Campaign Detail — UTM &amp; Not Attributed</h3></div>
+    <div style="padding:0"><div class="tbl-wrap"><table><thead><tr>
+      <th>Campaign</th><th>Leads</th><th>Completed</th><th>Active</th><th>Cancelled</th><th>Missed</th><th>No Appt</th><th>Appt Rate</th><th>Sold</th><th>Sales Rate</th>
+    </tr></thead><tbody id="utbody"></tbody></table></div></div>
+  </div>
+  <div class="sec"><div class="sh"><h3>💡 What Jumps Out — UTM &amp; Attribution Analysis</h3></div><div class="sb" id="uinsights"></div></div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<script>
+const ALGO=new Set(['Sell Us Your Car - NJ','Sell Us Your Car - PA','AL-GO (Tampa)']);
+const GOOGLE_CAMPS=[
+  {name:"Sell Us Your Car - NJ",type:"google",total:479,completed:16,active:0,cancelled:7,missed:38,no_appt:418,sold:4},
+  {name:"Sell Us Your Car - PA",type:"google",total:212,completed:5,active:0,cancelled:0,missed:21,no_appt:186,sold:2},
+  {name:"AutoLenders_FairlessHills_Competitive_LL_Search",type:"google",total:174,completed:10,active:1,cancelled:4,missed:24,no_appt:135,sold:8,ga:{cost:15200.28,clicks:4657,impr:67319,conv:428.09,ctr:6.92,conv_rate:9.19,avg_cpc:3.26,cost_conv:35.51}},
+  {name:"AutoLenders_FairlessHills_UsedCars_LL_Search",type:"google",total:96,completed:12,active:1,cancelled:3,missed:29,no_appt:51,sold:9,ga:{cost:18240.58,clicks:7799,impr:168722,conv:663.91,ctr:4.62,conv_rate:8.51,avg_cpc:2.34,cost_conv:27.47}},
+  {name:"AutoLenders_Exton_UsedCars_LL_Search",type:"google",total:88,completed:9,active:1,cancelled:3,missed:28,no_appt:47,sold:4,ga:{cost:15600.98,clicks:5492,impr:91774,conv:192.14,ctr:5.98,conv_rate:3.5,avg_cpc:2.84,cost_conv:81.2}},
+  {name:"AutoLenders_NewtownSquare_Brand_LL_Search",type:"google",total:75,completed:25,active:1,cancelled:1,missed:14,no_appt:34,sold:18,ga:{cost:6080.4,clicks:5098,impr:11403,conv:872.31,ctr:44.71,conv_rate:17.11,avg_cpc:1.19,cost_conv:6.97}},
+  {name:"AutoLenders_FairlessHills_Brand_LL_Search",type:"google",total:69,completed:15,active:0,cancelled:1,missed:14,no_appt:39,sold:14,ga:{cost:7600.38,clicks:3314,impr:6744,conv:453.57,ctr:49.14,conv_rate:13.69,avg_cpc:2.29,cost_conv:16.76}},
+  {name:"AutoLenders_Lakewood_Brand_LL_Search",type:"google",total:67,completed:16,active:0,cancelled:0,missed:18,no_appt:33,sold:8,ga:{cost:6500.31,clicks:3784,impr:11177,conv:501.18,ctr:33.86,conv_rate:13.24,avg_cpc:1.72,cost_conv:12.97}},
+  {name:"AutoLenders_PalmHarbor_UsedCars_LL_Search",type:"google",total:61,completed:6,active:0,cancelled:3,missed:11,no_appt:41,sold:4,ga:{cost:14300.41,clicks:4645,impr:116026,conv:263.2,ctr:4.0,conv_rate:5.67,avg_cpc:3.08,cost_conv:54.33}},
+  {name:"AutoLenders_TomsRiver_UsedCars_LL_Search",type:"google",total:57,completed:12,active:0,cancelled:1,missed:9,no_appt:35,sold:7,ga:{cost:18202.04,clicks:5828,impr:105704,conv:291.65,ctr:5.51,conv_rate:5.0,avg_cpc:3.12,cost_conv:62.41}},
+  {name:"AutoLenders_NewtownSquare_Competitive_LL_Search",type:"google",total:57,completed:6,active:1,cancelled:0,missed:10,no_appt:40,sold:1,ga:{cost:9124.33,clicks:2124,impr:35389,conv:62.58,ctr:6.0,conv_rate:2.95,avg_cpc:4.3,cost_conv:145.8}},
+  {name:"AutoLenders_Lawrenceville_UsedCars_LL_Search",type:"google",total:56,completed:10,active:0,cancelled:1,missed:15,no_appt:30,sold:5,ga:{cost:14300.52,clicks:5846,impr:125021,conv:468.16,ctr:4.68,conv_rate:8.01,avg_cpc:2.45,cost_conv:30.55}},
+  {name:"AutoLenders_Lakewood_UsedCars_LL_Search",type:"google",total:54,completed:8,active:0,cancelled:1,missed:16,no_appt:29,sold:2,ga:{cost:15601.97,clicks:5085,impr:86344,conv:126.28,ctr:5.89,conv_rate:2.48,avg_cpc:3.07,cost_conv:123.56}},
+  {name:"AutoLenders_NewtownSquare_UsedCars_LL_Search",type:"google",total:53,completed:7,active:0,cancelled:1,missed:19,no_appt:26,sold:4,ga:{cost:16720.48,clicks:5379,impr:96831,conv:186.91,ctr:5.56,conv_rate:3.47,avg_cpc:3.11,cost_conv:89.46}},
+  {name:"AutoLenders_Lawrenceville_Brand_LL_Search",type:"google",total:48,completed:20,active:0,cancelled:2,missed:5,no_appt:21,sold:16,ga:{cost:5200.35,clicks:2709,impr:9589,conv:572.77,ctr:28.25,conv_rate:21.14,avg_cpc:1.92,cost_conv:9.08}},
+  {name:"AutoLenders_Voorhees_UsedCars_LL_Search",type:"google",total:45,completed:8,active:0,cancelled:2,missed:14,no_appt:21,sold:5,ga:{cost:16901.75,clicks:4907,impr:78294,conv:201.46,ctr:6.27,conv_rate:4.11,avg_cpc:3.44,cost_conv:83.9}},
+  {name:"AutoLenders_Williamstown_Brand_LL_Search",type:"google",total:43,completed:11,active:1,cancelled:1,missed:6,no_appt:24,sold:8,ga:{cost:3900.26,clicks:2624,impr:5243,conv:459.91,ctr:50.05,conv_rate:17.53,avg_cpc:1.49,cost_conv:8.48}},
+  {name:"AutoLenders_Voorhees_Brand_LL_Search",type:"google",total:42,completed:12,active:0,cancelled:0,missed:11,no_appt:19,sold:12,ga:{cost:3900.33,clicks:2464,impr:5038,conv:370.09,ctr:48.91,conv_rate:15.02,avg_cpc:1.58,cost_conv:10.54}},
+  {name:"AutoLenders_Williamstown_UsedCars_LL_Search",type:"google",total:39,completed:8,active:0,cancelled:2,missed:11,no_appt:18,sold:1,ga:{cost:9752.27,clicks:3158,impr:49500,conv:134.73,ctr:6.38,conv_rate:4.27,avg_cpc:3.09,cost_conv:72.38}},
+  {name:"AutoLenders_EggHarbor_UsedCars_LL_Search",type:"google",total:37,completed:6,active:1,cancelled:0,missed:12,no_appt:18,sold:3,ga:{cost:11050.35,clicks:4005,impr:52084,conv:192.92,ctr:7.69,conv_rate:4.82,avg_cpc:2.76,cost_conv:57.28}},
+  {name:"AutoLenders_Lawrenceville_Competitive_LL_Search",type:"google",total:37,completed:5,active:0,cancelled:1,missed:3,no_appt:28,sold:2,ga:{cost:4790.61,clicks:1664,impr:36269,conv:168.05,ctr:4.59,conv_rate:10.1,avg_cpc:2.88,cost_conv:28.51}},
+  {name:"AutoLenders_EggHarbor_Brand_LL_Search",type:"google",total:36,completed:17,active:0,cancelled:3,missed:6,no_appt:10,sold:7,ga:{cost:3902.46,clicks:2369,impr:5199,conv:412.01,ctr:45.57,conv_rate:17.39,avg_cpc:1.65,cost_conv:9.47}},
+  {name:"AL-GO (Tampa)",type:"google",total:32,completed:2,active:0,cancelled:0,missed:1,no_appt:29,sold:1},
+  {name:"AutoLenders_TomsRiver_Competitive_LL_Search",type:"google",total:31,completed:2,active:0,cancelled:3,missed:6,no_appt:20,sold:3,ga:{cost:7800.29,clicks:1672,impr:21668,conv:73.55,ctr:7.72,conv_rate:4.4,avg_cpc:4.67,cost_conv:106.06}},
+  {name:"AutoLenders_Exton_Brand_LL_Search",type:"google",total:29,completed:9,active:0,cancelled:2,missed:5,no_appt:13,sold:8,ga:{cost:6500.29,clicks:2565,impr:6503,conv:660.88,ctr:39.44,conv_rate:25.77,avg_cpc:2.53,cost_conv:9.84}},
+  {name:"AutoLenders_TomsRiver_Brand_LL_Search",type:"google",total:27,completed:11,active:0,cancelled:0,missed:2,no_appt:14,sold:8,ga:{cost:5200.3,clicks:2944,impr:6617,conv:438.95,ctr:44.49,conv_rate:14.91,avg_cpc:1.77,cost_conv:11.85}},
+  {name:"AutoLenders_Lakewood_Competitive_LL_Search",type:"google",total:27,completed:1,active:0,cancelled:1,missed:8,no_appt:17,sold:0,ga:{cost:3022.95,clicks:1188,impr:23257,conv:85.76,ctr:5.11,conv_rate:7.22,avg_cpc:2.54,cost_conv:35.25}},
+  {name:"AutoLenders_PalmHarbor_Brand_LL_Search",type:"google",total:22,completed:4,active:1,cancelled:0,missed:7,no_appt:10,sold:3,ga:{cost:3900.71,clicks:1018,impr:4275,conv:216.34,ctr:23.81,conv_rate:21.25,avg_cpc:3.83,cost_conv:18.03}},
+  {name:"AutoLenders_PalmHarbor_Competitive_LL_Search",type:"google",total:17,completed:2,active:0,cancelled:2,missed:1,no_appt:12,sold:3,ga:{cost:2829.48,clicks:1032,impr:19204,conv:85.62,ctr:5.37,conv_rate:8.3,avg_cpc:2.74,cost_conv:33.05}},
+  {name:"AutoLenders_EggHarbor_Competitive_LL_Search",type:"google",total:12,completed:1,active:0,cancelled:0,missed:2,no_appt:9,sold:0,ga:{cost:5202.95,clicks:1172,impr:15860,conv:34.48,ctr:7.39,conv_rate:2.94,avg_cpc:4.44,cost_conv:150.88}},
+  {name:"AutoLenders_Williamstown_Jeep_LL_Search",type:"google",total:7,completed:2,active:0,cancelled:1,missed:0,no_appt:4,sold:0,ga:{cost:3954.04,clicks:785,impr:13347,conv:58.15,ctr:5.88,conv_rate:7.41,avg_cpc:5.04,cost_conv:68.0}},
+  {name:"AutoLenders_TomsRiver_Jeep_LL_Search",type:"google",total:7,completed:2,active:0,cancelled:0,missed:0,no_appt:5,sold:2,ga:{cost:3343.91,clicks:658,impr:10753,conv:35.78,ctr:6.12,conv_rate:5.44,avg_cpc:5.08,cost_conv:93.47}},
+  {name:"AutoLenders_FairlessHills_UsedSUVs_LL_Search",type:"google",total:7,completed:1,active:0,cancelled:0,missed:1,no_appt:5,sold:0,ga:{cost:1976.23,clicks:882,impr:15545,conv:73.66,ctr:5.67,conv_rate:8.35,avg_cpc:2.24,cost_conv:26.83}},
+  {name:"AutoLenders_NewtownSquare_Jeep_LL_Search",type:"google",total:6,completed:1,active:0,cancelled:0,missed:1,no_appt:4,sold:1,ga:{cost:2523.24,clicks:755,impr:12130,conv:48.06,ctr:6.22,conv_rate:6.37,avg_cpc:3.34,cost_conv:52.51}},
+  {name:"AutoLenders_Exton_Jeep_LL_Search",type:"google",total:4,completed:1,active:0,cancelled:0,missed:0,no_appt:3,sold:1,ga:{cost:1674.76,clicks:548,impr:10596,conv:30.56,ctr:5.17,conv_rate:5.58,avg_cpc:3.06,cost_conv:54.81}},
+  {name:"AutoLenders_PalmHarbor_Geomodified_LL_Search",type:"google",total:4,completed:1,active:0,cancelled:0,missed:2,no_appt:1,sold:1,ga:{cost:1224.14,clicks:432,impr:9066,conv:39.32,ctr:4.77,conv_rate:9.1,avg_cpc:2.83,cost_conv:31.14}},
+  {name:"AutoLenders_Voorhees_Jeep_LL_Search",type:"google",total:4,completed:1,active:0,cancelled:0,missed:0,no_appt:3,sold:1,ga:{cost:1427.01,clicks:373,impr:6339,conv:29.78,ctr:5.88,conv_rate:7.98,avg_cpc:3.83,cost_conv:47.92}},
+  {name:"AutoLenders_Lakewood_UsedSUVs_LL_Search",type:"google",total:4,completed:0,active:0,cancelled:0,missed:1,no_appt:3,sold:0,ga:{cost:1300.16,clicks:571,impr:9857,conv:54.62,ctr:5.79,conv_rate:9.57,avg_cpc:2.28,cost_conv:23.81}},
+  {name:"AutoLenders_Lakewood_Jeep_LL_Search",type:"google",total:3,completed:1,active:0,cancelled:0,missed:0,no_appt:2,sold:0,ga:{cost:4560.16,clicks:1001,impr:11972,conv:30.84,ctr:8.36,conv_rate:3.08,avg_cpc:4.56,cost_conv:147.86}},
+  {name:"AutoLenders_EggHarbor_Jeep_LL_Search",type:"google",total:3,completed:1,active:0,cancelled:0,missed:1,no_appt:1,sold:0,ga:{cost:1079.73,clicks:296,impr:4532,conv:25.86,ctr:6.53,conv_rate:8.74,avg_cpc:3.65,cost_conv:41.75}},
+  {name:"AutoLenders_NewtownSquare_UsedTrucks_LL_Search",type:"google",total:3,completed:0,active:0,cancelled:0,missed:0,no_appt:3,sold:0,ga:{cost:910.37,clicks:463,impr:9922,conv:56.29,ctr:4.67,conv_rate:12.16,avg_cpc:1.97,cost_conv:16.17}},
+  {name:"AutoLenders_Lawrenceville_UsedSUVs_LL_Search",type:"google",total:2,completed:2,active:0,cancelled:0,missed:0,no_appt:0,sold:1,ga:{cost:1299.76,clicks:459,impr:7740,conv:43.41,ctr:5.93,conv_rate:9.46,avg_cpc:2.83,cost_conv:29.94}},
+  {name:"AutoLenders_NewtownSquare_UsedSUVs_LL_Search",type:"google",total:2,completed:1,active:0,cancelled:0,missed:0,no_appt:1,sold:2,ga:{cost:1519.98,clicks:822,impr:14940,conv:63.21,ctr:5.5,conv_rate:7.69,avg_cpc:1.85,cost_conv:24.05}},
+  {name:"AutoLenders_FairlessHills_Geomodified_LL_Search",type:"google",total:2,completed:1,active:0,cancelled:0,missed:1,no_appt:0,sold:1,ga:{cost:1064.15,clicks:348,impr:5111,conv:44.45,ctr:6.81,conv_rate:12.77,avg_cpc:3.06,cost_conv:23.94}},
+  {name:"AutoLenders_Lawrenceville_Geomodified_LL_Search",type:"google",total:1,completed:1,active:0,cancelled:0,missed:0,no_appt:0,sold:1,ga:{cost:977.0,clicks:400,impr:5843,conv:31.52,ctr:6.85,conv_rate:7.88,avg_cpc:2.44,cost_conv:31.0}},
+  {name:"AutoLenders_FairlessHills_UsedTrucks_LL_Search",type:"google",total:1,completed:1,active:0,cancelled:0,missed:0,no_appt:0,sold:1,ga:{cost:1064.2,clicks:442,impr:8958,conv:32.49,ctr:4.93,conv_rate:7.35,avg_cpc:2.41,cost_conv:32.76}},
+  {name:"AutoLenders_FairlessHills_Jeep_LL_Search",type:"google",total:1,completed:0,active:0,cancelled:0,missed:1,no_appt:0,sold:0,ga:{cost:191.76,clicks:90,impr:2068,conv:7.0,ctr:4.35,conv_rate:7.78,avg_cpc:2.13,cost_conv:27.39}},
+];
+const UTM_CAMPS=[
+  {name:"past-customer",type:"utm",total:101,completed:10,active:0,cancelled:1,missed:17,no_appt:73,sold:4},
+  {name:"ph-here",type:"utm",total:28,completed:11,active:0,cancelled:0,missed:0,no_appt:17,sold:9},
+  {name:"vehicle-acquisition-non-buyers",type:"utm",total:27,completed:3,active:0,cancelled:0,missed:1,no_appt:23,sold:1},
+  {name:"vehicle-acquisition-prime",type:"utm",total:25,completed:4,active:0,cancelled:0,missed:3,no_appt:18,sold:0},
+  {name:"price-drop",type:"utm",total:24,completed:4,active:0,cancelled:0,missed:1,no_appt:19,sold:5},
+  {name:"cargurus_listings",type:"utm",total:18,completed:5,active:0,cancelled:0,missed:4,no_appt:9,sold:3},
+  {name:"cars.com_VDP_deeplink",type:"utm",total:16,completed:6,active:0,cancelled:2,missed:3,no_appt:5,sold:6},
+  {name:"newly-listed-inventory-hot",type:"utm",total:9,completed:1,active:0,cancelled:1,missed:1,no_appt:6,sold:0},
+  {name:"price-drop-nj",type:"utm",total:9,completed:1,active:0,cancelled:0,missed:0,no_appt:8,sold:0},
+  {name:"cars.com_VDP_referral",type:"utm",total:7,completed:4,active:0,cancelled:1,missed:0,no_appt:2,sold:1},
+  {name:"vdp-visitors-hot",type:"utm",total:7,completed:2,active:0,cancelled:0,missed:0,no_appt:5,sold:3},
+  {name:"jeep-campaign-adventure-audience",type:"utm",total:6,completed:2,active:0,cancelled:0,missed:1,no_appt:3,sold:2},
+  {name:"vehicle-acquisition-mature",type:"utm",total:6,completed:0,active:0,cancelled:0,missed:0,no_appt:6,sold:0},
+  {name:"general-updates",type:"utm",total:5,completed:1,active:0,cancelled:0,missed:1,no_appt:3,sold:1},
+  {name:"non-buyers-hot",type:"utm",total:5,completed:0,active:0,cancelled:0,missed:2,no_appt:3,sold:0},
+  {name:"jeep-campaign-retargeting-audience",type:"utm",total:4,completed:1,active:0,cancelled:1,missed:0,no_appt:2,sold:1},
+  {name:"conversion-fl-test-2",type:"utm",total:4,completed:0,active:0,cancelled:0,missed:1,no_appt:3,sold:0},
+  {name:"finance-renewal-hot",type:"utm",total:4,completed:0,active:0,cancelled:0,missed:0,no_appt:4,sold:0},
+  {name:"ms-12226-new-savings-tool",type:"utm",total:3,completed:1,active:0,cancelled:0,missed:0,no_appt:2,sold:1},
+  {name:"from-our-lot-nj",type:"utm",total:3,completed:1,active:0,cancelled:0,missed:1,no_appt:1,sold:1},
+  {name:"non-buyers-warm",type:"utm",total:3,completed:0,active:0,cancelled:1,missed:1,no_appt:1,sold:0},
+  {name:"vehicle-acquisition-dormant",type:"utm",total:3,completed:0,active:0,cancelled:0,missed:1,no_appt:2,sold:0},
+  {name:"price-drop-cold",type:"utm",total:3,completed:0,active:0,cancelled:1,missed:0,no_appt:2,sold:0},
+  {name:"cargurus_rpm_social_facebook_NewtownSquare",type:"utm",total:3,completed:0,active:0,cancelled:0,missed:1,no_appt:2,sold:0},
+  {name:"6309784310138",type:"utm",total:2,completed:1,active:0,cancelled:0,missed:0,no_appt:1,sold:0},
+  {name:"cargurus_rpm_social_facebook_EggHarbor",type:"utm",total:2,completed:1,active:0,cancelled:0,missed:0,no_appt:1,sold:0},
+  {name:"cash-renewal-warm",type:"utm",total:2,completed:1,active:0,cancelled:0,missed:0,no_appt:1,sold:0},
+  {name:"price-drop-pa",type:"utm",total:2,completed:0,active:0,cancelled:0,missed:1,no_appt:1,sold:0},
+  {name:"FB-Page-Call-to-Action-Button",type:"utm",total:2,completed:0,active:0,cancelled:0,missed:1,no_appt:1,sold:0},
+  {name:"cargurus_rpm_social_facebook_TomsRiver",type:"utm",total:2,completed:0,active:0,cancelled:0,missed:1,no_appt:1,sold:0},
+  {name:"cargurus_rpm_social_facebook_exton",type:"utm",total:2,completed:0,active:0,cancelled:0,missed:1,no_appt:1,sold:0},
+  {name:"listing_referral",type:"utm",total:2,completed:0,active:0,cancelled:0,missed:1,no_appt:1,sold:0},
+  {name:"cargurus_rpm_social_facebook_Princeton",type:"utm",total:1,completed:1,active:0,cancelled:0,missed:0,no_appt:0,sold:0},
+  {name:"cargurus_rpm_social_instagram_Princeton",type:"utm",total:1,completed:1,active:0,cancelled:0,missed:0,no_appt:0,sold:1},
+  {name:"positive-equity-cold",type:"utm",total:1,completed:1,active:0,cancelled:0,missed:0,no_appt:0,sold:1},
+  {name:"cash-renewal-cold",type:"utm",total:1,completed:1,active:0,cancelled:0,missed:0,no_appt:0,sold:0},
+  {name:"vdp-visitors-cold",type:"utm",total:1,completed:1,active:0,cancelled:0,missed:0,no_appt:0,sold:1},
+  {name:"finance-renewal-cold",type:"utm",total:1,completed:1,active:0,cancelled:0,missed:0,no_appt:0,sold:0},
+  {name:"cargurus_rpm_social_facebook_Voorhees",type:"utm",total:1,completed:0,active:0,cancelled:0,missed:0,no_appt:1,sold:0},
+  {name:"newly-listed-inventory-warm",type:"utm",total:1,completed:0,active:0,cancelled:0,missed:0,no_appt:1,sold:0},
+  {name:"non-buyers-cold",type:"utm",total:1,completed:0,active:0,cancelled:0,missed:0,no_appt:1,sold:0},
+  {name:"december2024",type:"utm",total:1,completed:0,active:0,cancelled:0,missed:1,no_appt:0,sold:0},
+  {name:"finance-renewal-warm",type:"utm",total:1,completed:0,active:0,cancelled:0,missed:1,no_appt:0,sold:0},
+];
+const NOT_ATTR={name:"Not Attributable",type:"not_attr",total:1294,completed:369,active:4,cancelled:49,missed:251,no_appt:621,sold:258};
+
+function fmt(n){return Number(n).toLocaleString();}
+function sn(n){
+  if(n==='Not Attributable')return 'Not Attributable';
+  if(n.startsWith('cargurus_rpm_social_'))return n.replace('cargurus_rpm_social_facebook_','CG FB ').replace('cargurus_rpm_social_instagram_','CG IG ');
+  if(n.startsWith('AutoLenders_'))return n.replace(/^AutoLenders_/,'').replace(/_LL_Search$/,'').replace(/_/g,' ');
+  return n.replace(/_/g,' ');
+}
+function hasAppt(c){return(c.completed+c.active+c.cancelled+c.missed)>0;}
+function sr(c){return c.total>0?c.sold/c.total:0;}
+function ar(c){return c.total>0?(c.completed+c.active)/c.total:0;}
+function campType(c){
+  if(ALGO.has(c.name))return['ALGO','pb'];
+  if(c.name.includes('_Brand_'))return['Brand','pg'];
+  if(c.name.includes('_Competitive_'))return['Competitive','pa'];
+  if(c.name.match(/_Used(Cars|SUVs|Trucks)_/))return['Used Cars','ps'];
+  if(c.name.includes('_Jeep_'))return['Jeep','ps'];
+  if(c.name.includes('_Geomodified_'))return['Geo','ps'];
+  return['Google','ps'];
+}
+
+function makeStackedBar(canvasId,camps){
+  const data=camps.filter(hasAppt).sort((a,b)=>b.total-a.total);
+  const full=data.map(c=>c.name);
+  const lbl=data.map(c=>sn(c.name));
+  const maxLen=Math.max(...lbl.map(l=>l.length));
+  const lblWidth=Math.max(230,maxLen*7+20);
+  const h=Math.max(data.length*30+60,200);
+  const cv=document.getElementById(canvasId);
+  cv.style.height=h+'px'; cv.height=h;
+  new Chart(cv,{type:'bar',data:{labels:lbl,datasets:[
+    {label:'Completed',data:data.map(c=>c.completed),backgroundColor:'#16a34a'},
+    {label:'Active',data:data.map(c=>c.active),backgroundColor:'#2563eb'},
+    {label:'Cancelled',data:data.map(c=>c.cancelled),backgroundColor:'#d97706'},
+    {label:'Missed',data:data.map(c=>c.missed),backgroundColor:'#ef4444'},
+    {label:'No Appt',data:data.map(c=>c.no_appt),backgroundColor:'#e2e8f0'}
+  ]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{font:{size:11},padding:10}},
+      tooltip:{mode:'y',intersect:false,callbacks:{
+        title:items=>full[items[0].dataIndex],
+        label:item=>` ${item.dataset.label}: ${fmt(item.parsed.x)}`
+      }}},
+    scales:{
+      x:{stacked:true,ticks:{font:{size:11}}},
+      y:{stacked:true,ticks:{callback:(v,i)=>lbl[i],font:{size:11}},afterFit:s=>{s.width=Math.max(s.width,lblWidth);}}
+    }}});
+}
+
+function makeSalesBar(canvasId,camps,minLeads){
+  const data=camps.filter(c=>c.total>=minLeads).sort((a,b)=>sr(b)-sr(a));
+  const full=data.map(c=>c.name);
+  const lbl=data.map(c=>sn(c.name));
+  const maxLen=Math.max(...lbl.map(l=>l.length));
+  const lblWidth=Math.max(230,maxLen*7+20);
+  const rates=data.map(c=>Math.round(sr(c)*1000)/10);
+  const colors=data.map(c=>{
+    if(ALGO.has(c.name))return'#94a3b8';
+    if(c.type==='not_attr')return'#3b82f6';
+    const r=sr(c);
+    return r>=0.15?'#16a34a':r>=0.05?'#d97706':'#ef4444';
+  });
+  const h=Math.max(data.length*28+60,200);
+  const cv=document.getElementById(canvasId);
+  cv.style.height=h+'px'; cv.height=h;
+  new Chart(cv,{type:'bar',data:{labels:lbl,datasets:[{label:'Sales Rate %',data:rates,backgroundColor:colors,borderRadius:3}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{mode:'y',intersect:false,callbacks:{
+        title:items=>full[items[0].dataIndex],
+        label:item=>` ${item.parsed.x}% (${data[item.dataIndex].sold} sold / ${data[item.dataIndex].total} leads)`
+      }}},
+      scales:{
+        x:{ticks:{callback:v=>v+'%',font:{size:11}}},
+        y:{ticks:{callback:(v,i)=>lbl[i],font:{size:11}},afterFit:s=>{s.width=Math.max(s.width,lblWidth);}}
+      }}});
+}
+
+function buildCards(id,items){
+  document.getElementById(id).innerHTML=items.map(c=>`<div class="card ${c.cl||''}"><div class="cl">${c.label}</div><div class="cv">${c.val}</div>${c.sub?`<div class="cs">${c.sub}</div>`:''}</div>`).join('');
+}
+
+function buildGTable(){
+  const tb=document.getElementById('gtbody');
+  tb.innerHTML=GOOGLE_CAMPS.map(c=>{
+    const s=sr(c),a=ar(c);
+    const[typ,tpill]=campType(c);
+    const spill=ALGO.has(c.name)?'ps':s>=0.15?'pg':s>=0.05?'pa':'pr';
+    const ga=c.ga||{};
+    const cpl=ga.cost&&c.total?(ga.cost/c.total).toFixed(0):'—';
+    const cps=ga.cost&&c.sold?(ga.cost/c.sold).toFixed(0):'—';
+    return`<tr>
+      <td style="min-width:180px;font-weight:500">${sn(c.name)}</td>
+      <td><span class="pill ${tpill}">${typ}</span></td>
+      <td>${fmt(c.total)}</td><td>${fmt(c.completed)}</td><td>${fmt(c.active)}</td>
+      <td>${fmt(c.cancelled)}</td><td>${fmt(c.missed)}</td><td>${fmt(c.no_appt)}</td>
+      <td>${(a*100).toFixed(1)}%</td><td>${fmt(c.sold)}</td>
+      <td><span class="pill ${spill}">${(s*100).toFixed(1)}%</span></td>
+      <td>${ga.cost?'$'+Math.round(ga.cost).toLocaleString():'—'}</td>
+      <td>${ga.clicks?fmt(ga.clicks):'—'}</td>
+      <td>${ga.impr?fmt(ga.impr):'—'}</td>
+      <td>${ga.conv?Math.round(ga.conv):'—'}</td>
+      <td>${ga.ctr?ga.ctr.toFixed(2)+'%':'—'}</td>
+      <td>${ga.conv_rate?ga.conv_rate.toFixed(2)+'%':'—'}</td>
+      <td>${ga.avg_cpc?'$'+ga.avg_cpc.toFixed(2):'—'}</td>
+      <td>${ga.cost_conv?'$'+ga.cost_conv.toFixed(2):'—'}</td>
+      <td>${cpl!=='—'?'$'+cpl:'—'}</td>
+      <td>${cps!=='—'?'$'+cps:'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function buildUTable(){
+  const rows=[NOT_ATTR,...UTM_CAMPS];
+  document.getElementById('utbody').innerHTML=rows.map(c=>{
+    const s=sr(c),a=ar(c);
+    const spill=c.type==='not_attr'?'pb':s>=0.15?'pg':s>=0.05?'pa':s>0?'pr':'ps';
+    return`<tr>
+      <td style="min-width:200px;font-weight:${c.type==='not_attr'?700:400}">${sn(c.name)}</td>
+      <td>${fmt(c.total)}</td><td>${fmt(c.completed)}</td><td>${fmt(c.active)}</td>
+      <td>${fmt(c.cancelled)}</td><td>${fmt(c.missed)}</td><td>${fmt(c.no_appt)}</td>
+      <td>${(a*100).toFixed(1)}%</td><td>${fmt(c.sold)}</td>
+      <td><span class="pill ${spill}">${(s*100).toFixed(1)}%</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function buildGInsights(){
+  document.getElementById('ginsights').innerHTML=`
+  <div class="ib g"><h4>💚 Brand Campaigns Are the Clear Leaders</h4>
+  <p>Every Brand campaign outperforms the Google average (8.3% sales rate). Top performers: <span class="m">Lawrenceville Brand 33.3%</span> (16/48, $325/sale — best value), <span class="m">TomsRiver Brand 29.6%</span> (8/27, $650/sale), <span class="m">Voorhees Brand 28.6%</span> (12/42, $325/sale), <span class="m">Exton Brand 27.6%</span> (8/29 — best AdWords conv rate at 25.77%), <span class="m">NewtownSquare Brand 24.0%</span> (18/75 — highest volume). Brand campaigns show 28–50% CTR vs. 4–8% for non-brand, confirming high purchase intent. All are marked "limited by budget" in AdWords — they could close even more if given room to run.</p></div>
+
+  <div class="ib r"><h4>🔴 Urgent Budget Review — Zero or Near-Zero Sales</h4>
+  <ul>
+    <li><strong>EggHarbor Competitive</strong>: $5,203 · 12 leads · <span class="m">0 sales</span> · $150.88/GA conv — highest cost-per-conversion in the account</li>
+    <li><strong>Lakewood Competitive</strong>: $3,023 · 27 leads · <span class="m">0 sales</span></li>
+    <li><strong>Lakewood Jeep</strong>: $4,560 · 3 leads · <span class="m">0 sales</span> · $147.86/GA conv</li>
+    <li><strong>NewtownSquare Competitive</strong>: $9,124 · 57 leads · <span class="m">1 sale</span> · $9,124/attributed sale</li>
+    <li><strong>Lakewood UsedCars</strong>: $15,602 · 54 leads · <span class="m">2 sales</span> · $7,801/sale</li>
+  </ul>
+  <p style="margin-top:8px"><strong>~$37,500 combined across these 5 campaigns with 3 attributed sales.</strong></p></div>
+
+  <div class="ib a"><h4>⚠️ Mid-Tier Review — High Spend, Modest Return</h4>
+  <ul>
+    <li><strong>Williamstown UsedCars</strong>: $9,752 · 39 leads · 1 sold = $9,752/sale. Improvement from zero but still the highest cost-per-sale in the account — needs attention.</li>
+    <li><strong>PalmHarbor UsedCars</strong>: $14,300 · 61 leads · 4 sold = $3,575/sale. FL market growing but campaign needs refinement.</li>
+    <li><strong>Voorhees UsedCars</strong>: $16,902 · 45 leads · 5 sold = $3,380/sale. Compare to Voorhees Brand at $325/sale — the intent gap is stark.</li>
+    <li><strong>NewtownSquare UsedCars</strong>: $16,720 · 53 leads · 4 sold = $4,180/sale.</li>
+    <li><strong>TomsRiver Competitive</strong>: $7,800 · 31 leads · 3 sold = $2,600/sale.</li>
+  </ul></div>
+
+  <div class="ib b"><h4>🔄 Where to Redirect Budget</h4>
+  <p>The ~$37K from zero/near-zero campaigns plus portions from mid-tier can go toward:</p>
+  <ul>
+    <li><strong>Brand campaigns</strong> — All are budget-limited per AdWords. They convert at 24–33% and are the most efficient spend in the account.</li>
+    <li><strong>TomsRiver UsedCars</strong> — Best UsedCars performer at 12.3% and $2,600/sale. More volume here is justified.</li>
+    <li><strong>FairlessHills UsedCars</strong> — 664 GA conversions (highest in account), 9.4% CRM sales rate, $2,027/sale. Strong engagement warrants maintained or increased investment.</li>
+    <li><strong>PalmHarbor Brand</strong> — 21.25% AdWords conv rate, 13.6% CRM sales rate, only $3,900 spend. Growing FL market with upside potential.</li>
+  </ul></div>
+
+  <div class="ib s"><h4>ℹ️ Sell Us Your Car &amp; AL-GO Tampa — Context</h4>
+  <p><strong>Sell Us Your Car - NJ</strong> (479 leads), <strong>Sell Us Your Car - PA</strong> (212 leads), and <strong>AL-GO (Tampa)</strong> (32 leads) total 723 Google leads (33%). With sell-intent leads removed from the data, the remaining visitors chose Research or Trade paths. A small portion became buyers (NJ: 4 sold, PA: 2 sold, Tampa: 1 sold). The low CRM sales rate reflects the audience makeup, not campaign failure. No AdWords cost is attributed to these in the report — they appear to be tracked separately. Evaluate by ALGO's own KPIs, not standard auto lending ROI.</p></div>
+
+  <div class="ib g"><h4>📊 AdWords Conversions vs. CRM Leads</h4>
+  <p>The 9,363 GA conversions include all website actions — payment calculator use, directions, inventory browsing, and form submissions. Only a fraction become CRM leads. <strong>FairlessHills UsedCars</strong> shows 664 GA conversions vs. 96 CRM leads; <strong>Lawrenceville UsedCars</strong> shows 468 GA conversions vs. 56 leads. These campaigns drive meaningful website engagement even when direct CRM attribution is partial. Keep this in mind when evaluating cost/sale metrics — the true assist value may be higher than the CRM data shows.</p></div>`;
+}
+
+function buildUInsights(){
+  document.getElementById('uinsights').innerHTML=`
+  <div class="ib g"><h4>💚 Highest-Converting UTM Sources</h4>
+  <ul>
+    <li><strong>vdp-visitors-hot</strong>: <span class="m">42.9% sales rate</span> (3/7) — highest of any campaign in the entire report. Re-engaging people who viewed specific vehicles is a proven close strategy.</li>
+    <li><strong>cars.com VDP deeplink</strong>: <span class="m">37.5%</span> (6/16) — bottom-of-funnel traffic landing on specific vehicle pages converts exceptionally well.</li>
+    <li><strong>jeep-campaign-adventure-audience</strong>: 33.3% (2/6) — niche targeting with strong results.</li>
+    <li><strong>ph-here</strong>: <span class="m">32.1%</span> (9/28) — standout jump this period: 9 sales from 28 leads with 11 completed appointments. This is now one of the top UTM performers.</li>
+    <li><strong>price-drop</strong>: <span class="m">20.8%</span> (5/24) — price alert triggers close effectively with warm leads.</li>
+    <li><strong>cargurus_listings</strong>: 16.7% (3/18) — third-party listing traffic delivering quality buyers.</li>
+  </ul></div>
+
+  <div class="ib b"><h4>📊 Not Attributed — Your Organic Benchmark</h4>
+  <p>Not-attributed leads (1,294 in CRM) now convert at <span class="m">19.9%</span> (258 sold) — up from 17.2% in the prior pull. These are people who came to AutoLenders.com directly — typing the URL, finding it through organic search, or referrals. This group closes better than virtually all paid campaigns, confirming that brand reputation and organic presence deliver premium buyer quality.</p>
+  <p>Use this 19.9% as your benchmark: any paid campaign consistently below this rate should be scrutinized — you may be paying for traffic that performs worse than what comes in organically.</p></div>
+
+  <div class="ib a"><h4>⚠️ Past Customer Retargeting — Still Underperforming</h4>
+  <p><strong>past-customer</strong> is the largest UTM campaign (101 leads) with only 4 sold = 4.0%. These are warm contacts who already know and trust the brand — the conversion rate should be significantly higher. Against a 19.9% organic benchmark and ph-here running at 32.1%, there's a large gap to close. Consider: (1) Is the messaging aligned with where they are in the buying cycle? (2) Are personalized inventory or rate offers being used? (3) Is outreach timed to likely upgrade windows?</p></div>
+
+  <div class="ib s"><h4>📋 Vehicle Acquisition &amp; Renewal Campaigns</h4>
+  <p>The <strong>vehicle-acquisition-*</strong> series and <strong>finance/cash-renewal</strong> campaigns serve CRM pipeline and inventory goals rather than direct retail sales. Evaluate these by engagement, pipeline movement, and downstream conversion over a longer window — not single-month CRM sales rate. The <strong>price-drop</strong> campaign (20.8%) demonstrates that well-timed CRM triggers absolutely work when the lead is ready.</p></div>`;
+}
+
+function showTab(id,btn){
+  document.querySelectorAll('.tc').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(e=>e.classList.remove('on'));
+  document.getElementById('tab-'+id).classList.add('on');
+  btn.classList.add('on');
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const gt=GOOGLE_CAMPS.reduce((s,c)=>({total:s.total+c.total,comp:s.comp+c.completed,sold:s.sold+c.sold,missed:s.missed+c.missed,na:s.na+c.no_appt}),{total:0,comp:0,sold:0,missed:0,na:0});
+  buildCards('gcards',[
+    {label:'Google Leads',val:fmt(gt.total),sub:'48.4% of all internet leads'},
+    {label:'Appts Completed',val:fmt(gt.comp),sub:(gt.comp/gt.total*100).toFixed(1)+'% of Google leads',cl:'g'},
+    {label:'Sales Attributed',val:fmt(gt.sold),sub:(gt.sold/gt.total*100).toFixed(1)+'% sales rate',cl:'g'},
+    {label:'Missed Appts',val:fmt(gt.missed),sub:'Scheduled but no-showed',cl:'a'},
+    {label:'No Appointment',val:fmt(gt.na),sub:(gt.na/gt.total*100).toFixed(1)+'% never scheduled',cl:'r'}
+  ]);
+  const ut=UTM_CAMPS.reduce((s,c)=>({total:s.total+c.total,comp:s.comp+c.completed,sold:s.sold+c.sold}),{total:0,comp:0,sold:0});
+  const combined=ut.total+NOT_ATTR.total;
+  buildCards('ucards',[
+    {label:'UTM Leads',val:fmt(ut.total),sub:'7.8% of all internet leads'},
+    {label:'Not Attributed',val:fmt(NOT_ATTR.total),sub:'19.9% sales rate',cl:'b'},
+    {label:'Combined Total',val:fmt(combined),sub:'UTM + Not Attributed'},
+    {label:'Appts Completed',val:fmt(ut.comp),sub:(ut.comp/ut.total*100).toFixed(1)+'% of UTM leads',cl:'g'},
+    {label:'Sales Attributed',val:fmt(ut.sold),sub:(ut.sold/ut.total*100).toFixed(1)+'% UTM sales rate',cl:'g'}
+  ]);
+  makeStackedBar('ga-appt',GOOGLE_CAMPS);
+  makeSalesBar('ga-sales',GOOGLE_CAMPS,5);
+  const utmFull=[NOT_ATTR,...UTM_CAMPS];
+  makeStackedBar('utm-appt',utmFull);
+  makeSalesBar('utm-sales',utmFull.filter(c=>c.total>=3),1);
+  buildGTable();
+  buildUTable();
+  buildGInsights();
+  buildUInsights();
+});
+</script>
+</body></html>
